@@ -8,13 +8,9 @@ import java.util.List;
 @Getter
 @Setter
 public class DiceSimulationResponse {
-    /**
-     * Summed roll numbers from the dices.
-     */
-    private int sum;
 
     /**
      * Distribution of the rolled total sums.
      */
-    private List<DiceDistributionResponse> distribution;
+    private List<DiceDistributionResponse> diceDistribution;
 }

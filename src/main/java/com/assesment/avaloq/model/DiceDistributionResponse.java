@@ -10,10 +10,10 @@ public class DiceDistributionResponse {
     /**
      * Total sum of the rolled dices.
      */
-    private int total;
+    private int totalSum;
 
     /**
-     * How many times given total has been rolled.
+     * How many times given total sum has been rolled.
      */
-    private int amount;
+    private long count;
 }

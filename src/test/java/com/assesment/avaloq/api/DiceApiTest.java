@@ -1,6 +1,6 @@
 package com.assesment.avaloq.api;
 
-import com.assesment.avaloq.service.DiceService;
+import com.assesment.avaloq.service.DiceApiService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ class DiceApiTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private DiceService diceService;
+    private DiceApiService diceApiService;
 
     @Test
     void simulateWithNumberOfDicesIncorrect() throws Exception {

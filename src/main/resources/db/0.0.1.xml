@@ -1,0 +1,57 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet author="mfoks" id="0.0.1-1">
+        <comment>Create table for all roll configurations</comment>
+        <createTable tableName="roll_configuration">
+            <column name="id" autoIncrement="true" type="BIGINT(20)">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="dice_number" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="dice_side" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="mfoks" id="0.0.1-2">
+        <comment>Create table for each simulation</comment>
+        <createTable tableName="simulation">
+            <column name="id" autoIncrement="true" type="BIGINT(20)">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="roll_configuration_id" type="BIGINT(20)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="simulation"
+                                 baseColumnNames="roll_configuration_id"
+                                 constraintName="roll_configuration_id_fk"
+                                 referencedTableName="roll_configuration"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet author="mfoks" id="0.0.1-3">
+        <comment>Create table for each roll entry</comment>
+        <createTable tableName="roll">
+            <column name="id" autoIncrement="true" type="BIGINT(20)">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="simulation_id" type="BIGINT(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="total_sum" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="roll"
+                                 baseColumnNames="simulation_id"
+                                 constraintName="simulation_id_fk"
+                                 referencedTableName="simulation"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+</databaseChangeLog>

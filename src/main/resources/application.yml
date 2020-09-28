@@ -1,3 +1,9 @@
 spring:
   jackson:
     default-property-inclusion: non_null
+  datasource:
+    url: jdbc:mariadb://localhost:3306/avq-assesment?autoReconnect=true&createDatabaseIfNotExist=true
+    username: root
+    password: root
+  liquibase:
+    change-log: classpath:db/master.xml
