@@ -1,6 +1,6 @@
 package com.assesment.avaloq.api;
 
-import com.assesment.avaloq.service.DiceApiService;
+import com.assesment.avaloq.service.RollSimulationApiService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,14 +13,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
-@WebMvcTest(value = DiceApi.class)
-class DiceApiTest {
+@WebMvcTest(value = RollSimulationApi.class)
+class RollSimulationApiTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
-    private DiceApiService diceApiService;
+    private RollSimulationApiService rollSimulationApiService;
 
     @Test
     void simulateWithNumberOfDicesIncorrect() throws Exception {

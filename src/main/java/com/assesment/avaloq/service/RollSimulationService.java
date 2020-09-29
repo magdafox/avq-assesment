@@ -16,7 +16,7 @@ import java.util.Random;
 
 @Slf4j
 @Service
-public class DiceService {
+public class RollSimulationService {
 
     @Autowired
     private RollConfigurationRepository rollConfigurationRepository;

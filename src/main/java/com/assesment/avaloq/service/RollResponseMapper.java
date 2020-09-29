@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
  * Utility class to map dice distribution API responses.
  */
 @UtilityClass
-public class DiceResponseMapper {
+public class RollResponseMapper {
 
     public List<DiceDistributionResponse> mapDistributionList(List<Roll> rollList) {
         Map<Integer, Long> totalCounts = countByTotalSum(rollList);

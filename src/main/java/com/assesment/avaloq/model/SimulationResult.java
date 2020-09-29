@@ -7,7 +7,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class DiceSimulationResponse {
+public class RollSimulationResponse {
 
     /**
      * Distribution of the rolled total sums.
