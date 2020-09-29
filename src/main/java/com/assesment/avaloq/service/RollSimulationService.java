@@ -81,4 +81,8 @@ public class RollSimulationService {
         rollConfiguration.setDiceSide(diceSide);
         return rollConfigurationRepository.save(rollConfiguration);
     }
+
+    public List<RollConfiguration> getAllRollConfigurations() {
+        return rollConfigurationRepository.findAll();
+    }
 }

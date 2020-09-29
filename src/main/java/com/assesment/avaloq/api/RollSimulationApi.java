@@ -1,6 +1,7 @@
 package com.assesment.avaloq.api;
 
-import com.assesment.avaloq.model.RollSimulationResponse;
+import com.assesment.avaloq.model.DistributionResponse;
+import com.assesment.avaloq.model.SimulationResult;
 import com.assesment.avaloq.service.RollSimulationApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -21,7 +22,7 @@ public class RollSimulationApi {
     private RollSimulationApiService rollSimulationApiService;
 
     @PostMapping(value = "/dices/distributions", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RollSimulationResponse> executeSimulation(
+    public ResponseEntity<SimulationResult> executeSimulation(
             @RequestParam(value = "diceNumber", required = false, defaultValue = "3") @Min(1) Integer diceNumber,
             @RequestParam(value = "diceSide", required = false, defaultValue = "6") @Min(4) Integer diceSide,
             @RequestParam(value = "numberOfRolls", required = false, defaultValue = "100") @Min(1) Integer numberOfRolls) {
@@ -29,7 +30,7 @@ public class RollSimulationApi {
     }
 
     @GetMapping(value = "/dices/distributions", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> getDistributions() {
+    public ResponseEntity<DistributionResponse> getDistributions() {
         return rollSimulationApiService.getSimulatedDistribution();
     }
 }

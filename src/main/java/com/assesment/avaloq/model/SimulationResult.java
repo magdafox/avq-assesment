@@ -7,10 +7,10 @@ import java.util.List;
 
 @Getter
 @Setter
-public class RollSimulationResponse {
+public class SimulationResult {
 
     /**
      * Distribution of the rolled total sums.
      */
-    private List<DiceDistributionResponse> diceDistribution;
+    private List<TotalSumResult> results;
 }

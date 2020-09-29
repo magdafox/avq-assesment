@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class DiceDistributionResponse {
+public class TotalSumResult {
 
     /**
      * Total sum of the rolled dices.

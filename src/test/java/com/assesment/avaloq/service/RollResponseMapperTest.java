@@ -4,7 +4,7 @@ import com.assesment.avaloq.domain.Roll;
 import com.assesment.avaloq.domain.RollConfiguration;
 import com.assesment.avaloq.domain.Simulation;
 import com.assesment.avaloq.model.DistributionDetails;
-import com.assesment.avaloq.model.TotalSumDistribution;
+import com.assesment.avaloq.model.TotalSumResult;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -28,15 +28,15 @@ class RollResponseMapperTest {
         Roll roll3 = new Roll();
         roll3.setTotalSum(5);
 
-        List<TotalSumDistribution> totalSums = RollResponseMapper.mapTotalSumDistribution(List.of(roll1, roll2, roll3));
+        List<TotalSumResult> totalSums = RollResponseMapper.mapTotalSumDistribution(List.of(roll1, roll2, roll3));
 
         assertNotNull(totalSums);
         assertEquals(2, totalSums.size());
-        TotalSumDistribution sum1 = totalSums.get(0);
+        TotalSumResult sum1 = totalSums.get(0);
         assertNotNull(sum1);
         assertEquals(1, sum1.getTotalSum());
         assertEquals(1, sum1.getCount());
-        TotalSumDistribution sum2 = totalSums.get(1);
+        TotalSumResult sum2 = totalSums.get(1);
         assertNotNull(sum2);
         assertEquals(5, sum2.getTotalSum());
         assertEquals(2, sum2.getCount());

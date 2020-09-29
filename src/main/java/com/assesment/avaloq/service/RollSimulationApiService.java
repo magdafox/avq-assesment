@@ -2,7 +2,8 @@ package com.assesment.avaloq.service;
 
 import com.assesment.avaloq.domain.Roll;
 import com.assesment.avaloq.domain.RollConfiguration;
-import com.assesment.avaloq.model.RollSimulationResponse;
+import com.assesment.avaloq.model.DistributionResponse;
+import com.assesment.avaloq.model.SimulationResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,20 +20,23 @@ public class RollSimulationApiService {
     @Autowired
     private RollSimulationService rollSimulationService;
 
-    public ResponseEntity<RollSimulationResponse> executeSimulation(Integer diceNumber, Integer diceSide,
-                                                                    Integer numberOfRolls) {
+    public ResponseEntity<SimulationResult> executeSimulation(Integer diceNumber, Integer diceSide,
+                                                              Integer numberOfRolls) {
         log.info("Roll {} pieces of {}-sided dice {} times", diceNumber, diceSide, numberOfRolls);
         RollConfiguration rollConfiguration = rollSimulationService.getRollConfiguration(diceNumber, diceSide);
 
         List<Roll> rollList = rollSimulationService.executeSimulation(numberOfRolls, rollConfiguration);
 
-        RollSimulationResponse response = new RollSimulationResponse();
-        response.setDiceDistribution(RollResponseMapper.mapDistributionList(rollList));
+        SimulationResult response = new SimulationResult();
+        response.setResults(RollResponseMapper.mapTotalSumDistribution(rollList));
         return ResponseEntity.ok(response);
     }
 
-    public ResponseEntity<Void> getSimulatedDistribution() {
+    public ResponseEntity<DistributionResponse> getSimulatedDistribution() {
+        List<RollConfiguration> rollConfigurations = rollSimulationService.getAllRollConfigurations();
 
-        return null;
+        DistributionResponse response = new DistributionResponse();
+        response.setCombinations(RollResponseMapper.mapDistributionList(rollConfigurations));
+        return ResponseEntity.ok(response);
     }
 }
