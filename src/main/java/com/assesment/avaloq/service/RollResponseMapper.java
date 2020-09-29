@@ -2,8 +2,8 @@ package com.assesment.avaloq.service;
 
 import com.assesment.avaloq.domain.Roll;
 import com.assesment.avaloq.domain.RollConfiguration;
-import com.assesment.avaloq.domain.Simulation;
-import com.assesment.avaloq.model.DistributionDetails;
+import com.assesment.avaloq.model.DiceCombinationDetails;
+import com.assesment.avaloq.model.RelativeDistributionDetails;
 import com.assesment.avaloq.model.TotalSumResult;
 import lombok.experimental.UtilityClass;
 
@@ -18,15 +18,11 @@ import java.util.stream.Collectors;
 @UtilityClass
 public class RollResponseMapper {
 
-    public List<TotalSumResult> mapTotalSumDistribution(List<Roll> rolls) {
-        Map<Integer, Long> totalCounts = countByTotalSum(rolls);
+    public List<TotalSumResult> mapTotalSumList(List<Roll> rolls) {
+        Map<Integer, Long> totalCounts = RollSimulationUtil.countByTotalSum(rolls);
         return totalCounts.entrySet().stream().map(t -> mapTotalSum(t.getKey(), t.getValue()))
                 .sorted(Comparator.comparing(TotalSumResult::getTotalSum))
                 .collect(Collectors.toList());
-    }
-
-    private Map<Integer, Long> countByTotalSum(List<Roll> rollList) {
-        return rollList.stream().collect(Collectors.groupingBy(Roll::getTotalSum, Collectors.counting()));
     }
 
     private TotalSumResult mapTotalSum(Integer total, Long amount) {
@@ -36,23 +32,36 @@ public class RollResponseMapper {
         return response;
     }
 
-    public List<DistributionDetails> mapDistributionList(List<RollConfiguration> rollConfigurations) {
-        return rollConfigurations.stream().map(RollResponseMapper::mapDistribution)
-                .sorted(Comparator.comparing(DistributionDetails::getDiceNumber)
-                        .thenComparing(DistributionDetails::getDiceSide))
+    public List<DiceCombinationDetails> mapAllDiceCombinations(List<RollConfiguration> rollConfigurations) {
+        return rollConfigurations.stream().map(RollResponseMapper::mapDiceCombination)
+                .sorted(Comparator.comparing(DiceCombinationDetails::getDiceNumber)
+                        .thenComparing(DiceCombinationDetails::getDiceSide))
                 .collect(Collectors.toList());
     }
 
-    private DistributionDetails mapDistribution(RollConfiguration rollConfiguration) {
-        DistributionDetails details = new DistributionDetails();
+    private DiceCombinationDetails mapDiceCombination(RollConfiguration rollConfiguration) {
+        DiceCombinationDetails details = new DiceCombinationDetails();
         details.setDiceNumber(rollConfiguration.getDiceNumber());
         details.setDiceSide(rollConfiguration.getDiceSide());
         details.setSimulationsNumber(rollConfiguration.getSimulations().size());
-        details.setRollsNumber(countRollsNumber(rollConfiguration.getSimulations()));
+
+        List<Roll> rolls = RollSimulationUtil.extractRolls(rollConfiguration.getSimulations());
+        details.setRollsNumber(rolls.size());
+        details.setDistribution(mapDistribution(rolls));
         return details;
     }
 
-    private long countRollsNumber(List<Simulation> simulations) {
-        return simulations.stream().map(Simulation::getRolls).mapToLong(List::size).sum();
+    private static List<RelativeDistributionDetails> mapDistribution(List<Roll> rolls) {
+        Map<Integer, Long> totalCounts = RollSimulationUtil.countByTotalSum(rolls);
+        return totalCounts.entrySet().stream().map(t -> mapRelativeDistribution(t.getKey(), t.getValue(), rolls.size()))
+                .sorted(Comparator.comparing(RelativeDistributionDetails::getTotalSum))
+                .collect(Collectors.toList());
+    }
+
+    private RelativeDistributionDetails mapRelativeDistribution(Integer total, Long amount, long size) {
+        RelativeDistributionDetails distribution = new RelativeDistributionDetails();
+        distribution.setTotalSum(total);
+        distribution.setRelativeDistribution(RollSimulationUtil.countRelativeDistribution(amount, size));
+        return distribution;
     }
 }

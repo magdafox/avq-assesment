@@ -3,7 +3,7 @@ package com.assesment.avaloq.service;
 import com.assesment.avaloq.domain.Roll;
 import com.assesment.avaloq.domain.RollConfiguration;
 import com.assesment.avaloq.domain.Simulation;
-import com.assesment.avaloq.model.DistributionDetails;
+import com.assesment.avaloq.model.DiceCombinationDetails;
 import com.assesment.avaloq.model.TotalSumResult;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 class RollResponseMapperTest {
 
     @Test
-    void mapRollsToTotalSumDistributionTest() {
+    void mapRollsToTotalSumListTest() {
         Roll roll1 = new Roll();
         roll1.setTotalSum(1);
 
@@ -28,7 +28,7 @@ class RollResponseMapperTest {
         Roll roll3 = new Roll();
         roll3.setTotalSum(5);
 
-        List<TotalSumResult> totalSums = RollResponseMapper.mapTotalSumDistribution(List.of(roll1, roll2, roll3));
+        List<TotalSumResult> totalSums = RollResponseMapper.mapTotalSumList(List.of(roll1, roll2, roll3));
 
         assertNotNull(totalSums);
         assertEquals(2, totalSums.size());
@@ -43,7 +43,7 @@ class RollResponseMapperTest {
     }
 
     @Test
-    void mapDistributionList() {
+    void mapAllDiceCombinationsTest() {
         Roll roll1 = new Roll();
         roll1.setTotalSum(1);
         Roll roll2 = new Roll();
@@ -57,15 +57,17 @@ class RollResponseMapperTest {
         config1.setDiceNumber(2);
         config1.setSimulations(List.of(simulation1));
 
-        List<DistributionDetails> detailsList = RollResponseMapper.mapDistributionList(List.of(config1));
+        List<DiceCombinationDetails> detailsList = RollResponseMapper.mapAllDiceCombinations(List.of(config1));
 
         assertNotNull(detailsList);
         assertEquals(1, detailsList.size());
-        DistributionDetails details1 = detailsList.get(0);
+        DiceCombinationDetails details1 = detailsList.get(0);
         assertNotNull(details1);
         assertEquals(config1.getDiceNumber(), details1.getDiceNumber());
         assertEquals(config1.getDiceSide(), details1.getDiceSide());
         assertEquals(1, details1.getSimulationsNumber());
         assertEquals(2, details1.getRollsNumber());
+        assertNotNull(details1.getDistribution());
+        assertEquals(2, details1.getDistribution().size());
     }
 }

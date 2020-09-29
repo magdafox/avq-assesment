@@ -26,7 +26,7 @@ class RollSimulationApiTest {
     void simulateWithNumberOfDicesIncorrect() throws Exception {
         mockMvc.perform(
                 post("/dices/distributions")
-                        .param("numberOfDices", "0"))
+                        .param("diceNumber", "0"))
                 .andExpect(status().isBadRequest());
     }
 
@@ -34,7 +34,7 @@ class RollSimulationApiTest {
     void simulateWithNumberOfDicesCorrect() throws Exception {
         mockMvc.perform(
                 post("/dices/distributions")
-                        .param("numberOfDices", "1"))
+                        .param("diceNumber", "1"))
                 .andExpect(status().isOk());
     }
 
@@ -42,7 +42,7 @@ class RollSimulationApiTest {
     void simulateWithSidesOfDiceIncorrect() throws Exception {
         mockMvc.perform(
                 post("/dices/distributions")
-                        .param("sidesOfDice", "3"))
+                        .param("diceSide", "3"))
                 .andExpect(status().isBadRequest());
     }
 
@@ -50,7 +50,7 @@ class RollSimulationApiTest {
     void simulateWithSidesOfDiceCorrect() throws Exception {
         mockMvc.perform(
                 post("/dices/distributions")
-                        .param("sidesOfDice", "4"))
+                        .param("diceSide", "4"))
                 .andExpect(status().isOk());
     }
 

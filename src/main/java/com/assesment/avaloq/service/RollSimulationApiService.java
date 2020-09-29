@@ -28,7 +28,7 @@ public class RollSimulationApiService {
         List<Roll> rollList = rollSimulationService.executeSimulation(numberOfRolls, rollConfiguration);
 
         SimulationResult response = new SimulationResult();
-        response.setResults(RollResponseMapper.mapTotalSumDistribution(rollList));
+        response.setResults(RollResponseMapper.mapTotalSumList(rollList));
         return ResponseEntity.ok(response);
     }
 
@@ -36,7 +36,7 @@ public class RollSimulationApiService {
         List<RollConfiguration> rollConfigurations = rollSimulationService.getAllRollConfigurations();
 
         DistributionResponse response = new DistributionResponse();
-        response.setCombinations(RollResponseMapper.mapDistributionList(rollConfigurations));
+        response.setDiceCombinations(RollResponseMapper.mapAllDiceCombinations(rollConfigurations));
         return ResponseEntity.ok(response);
     }
 }

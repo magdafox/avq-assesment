@@ -3,9 +3,11 @@ package com.assesment.avaloq.model;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
-public class DistributionDetails {
+public class DiceCombinationDetails {
 
     private int diceNumber;
 
@@ -14,4 +16,6 @@ public class DistributionDetails {
     private int simulationsNumber;
 
     private long rollsNumber;
+
+    private List<RelativeDistributionDetails> distribution;
 }
