@@ -15,6 +15,10 @@ git clone git@github.com:magdafox/avq-assesment.git
 mvn spring-boot:run
 ```
 
+#### Testng locally
+
+To run the REST endpoints locally you can use `RollSimulationApiIntegrationTest` integration test.
+
 ## Overview
 
 #### Introduction
