@@ -1,24 +1,95 @@
 # avq-assesment
 
-## General instructions 
-The exercise specifies the requirements only on a high level. Please make sensible assumptions for filling in the missing parts. 
- 
-## Assignment 1: Create a Spring Boot application 
-Create a REST endpoint to execute a dice distribution simulation: 
-1.	Roll 3 pieces of 6-sided dice a total of 100 times. a. 
-a.	For every roll sum the rolled number from the dice (the result will be between 3 and 18). 
-b.	Count how many times each total has been rolled. 
-c.	Return this as a JSON structure. 
-2.	Make the number of dice, the sides of the dice and the total number of rolls configurable through query parameters.
-3.	Add input validation:
-a.	The number of dice and the total number of rolls must be at least 1.
-b.	The sides of a dice must be at least 4
- 
-## Assignment 3: Store the result of the simulation from Assignment 1 in a database
-Create a REST endpoint that can query the stored data: 
-1.	Return the total number of simulations and total rolls made, grouped by all existing dice number–dice side combinations.
-a.	Eg. if there were two calls to the REST endpoint for 3 pieces of 6 sided dice, once with a total number of rolls of 100 and once with a total number of rolls of 200, then there were a total of 2 simulations, with a total of 300 rolls for this combination. 
-2.	For a given dice number–dice side combination, return the relative distribution, compared to the total rolls, for all the simulations. 
-a.	In case of a total of 300 rolls, if the sum „3” was rolled 4 times, that would be 1.33%. 
-b.	If the sum „4” was rolled 3 times, that would be 1%. 
-c.	If the total „5” was rolled 11 times, that would be 3.66%. Etc...
+## Installation 
+
+#### Getting the sources
+
+From git repository:
+``` bash
+git clone git@github.com:magdafox/avq-assesment.git
+```
+
+#### Running the application
+
+``` bash
+mvn spring-boot:run
+```
+
+## Overview
+
+#### Introduction
+
+This is an application to simulate dice distribution. 
+
+### REST Api
+
+#### Execute dice distribution simulation
+
+``` bash
+POST http://localhost:8080/dice/simulations
+```
+Using query parameters you can configure:
+
+- `diceNumber` - number of dices which will be rolled each time
+- `diceSide` - number of sides of the dice
+- `numberOfRolls` - number of overall rolls
+
+Example:
+``` bash
+POST http://localhost:8080/dice/simulations?diceNumber=3&diceSide=6&numberOfRolls=100
+```
+That will simulate 3 pieces of 6-sided dices rolled 100-times. Those are also the default values if none will be 
+configured.
+
+Example of the response:
+
+```json
+{
+    "results": [
+        {
+            "totalSum": 10,
+            "count": 2
+        },
+        {
+            "totalSum": 11,
+            "count": 1
+        }
+  ]
+}
+```
+
+That output means that sum `10` was rolled 2 times but `11` only one.
+
+#### Read relative distribution for each dice number - dice side combination
+
+``` bash
+GET http://localhost:8080/dice/simulations/distributions
+```
+
+Example of the response:
+```json
+{
+    "diceCombinations": [
+        {
+            "diceNumber": 3,
+            "diceSide": 4,
+            "simulationsNumber": 6,
+            "rollsNumber": 600,
+            "distribution": [
+                {
+                    "totalSum": 3,
+                    "relativeDistribution": 1.00
+                },
+                {
+                    "totalSum": 4,
+                    "relativeDistribution": 4.83
+                }
+            ]
+        }
+    ]
+}
+```
+
+That response means that for 3 pieces of 4-sided dice combination `6` simulations were executed, overall `600` rolls.
+Moreover we can read relative distribution compared to total rolls for each `totalSum` e.g. for `totalSum=4` it is 
+`4.83%`.
