@@ -1,7 +1,7 @@
 package com.assesment.avaloq.service;
 
-import com.assesment.avaloq.domain.Roll;
 import com.assesment.avaloq.domain.RollConfiguration;
+import com.assesment.avaloq.domain.Simulation;
 import com.assesment.avaloq.repository.RollConfigurationRepository;
 import com.assesment.avaloq.repository.SimulationRepository;
 import org.junit.jupiter.api.Test;
@@ -13,7 +13,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -45,10 +44,15 @@ class RollSimulationServiceTest {
         configuration.setDiceNumber(3);
         configuration.setDiceSide(6);
 
-        List<Roll> rolls = rollSimulationService.executeSimulation(numberOfRolls, configuration);
+        when(simulationRepository.save(any(Simulation.class))).then(returnsFirstArg());
 
-        assertNotNull(rolls);
-        assertEquals(numberOfRolls, rolls.size());
+        Simulation simulation = rollSimulationService.executeSimulation(numberOfRolls, configuration);
+
+        assertNotNull(simulation);
+        assertNotNull(simulation.getRolls());
+        assertEquals(numberOfRolls, simulation.getRolls().size());
+
+        verify(simulationRepository, times(1)).save(any(Simulation.class));
     }
 
     private static Stream<Arguments> numberOfRolls() {

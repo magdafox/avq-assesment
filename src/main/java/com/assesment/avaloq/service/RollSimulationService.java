@@ -14,9 +14,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
+/**
+ * Service for executing actions on {@link Roll} object.
+ */
 @Slf4j
 @Service
 public class RollSimulationService {
+
+    private static final Random RANDOM = new Random();
 
     @Autowired
     private RollConfigurationRepository rollConfigurationRepository;
@@ -24,20 +29,19 @@ public class RollSimulationService {
     @Autowired
     private SimulationRepository simulationRepository;
 
-    public List<Roll> executeSimulation(Integer numberOfRolls, RollConfiguration rollConfiguration) {
+    public Simulation executeSimulation(Integer numberOfRolls, RollConfiguration rollConfiguration) {
         List<Roll> rolls = new ArrayList<>();
         for (int i = 0; i < numberOfRolls; i++) {
             Roll roll = executeRoll(rollConfiguration);
             rolls.add(roll);
         }
 
-        saveSimulation(rollConfiguration, rolls);
-        return rolls;
+        return saveSimulation(rollConfiguration, rolls);
     }
 
     private Roll executeRoll(RollConfiguration rollConfiguration) {
         int totalSum = 0;
-        for (int j = 0; j < rollConfiguration.getDiceNumber(); j++) {
+        for (int i = 0; i < rollConfiguration.getDiceNumber(); i++) {
             int rolledNumber = roll(rollConfiguration.getDiceSide());
             log.debug("Rolled number: {}", rolledNumber);
 
@@ -47,8 +51,7 @@ public class RollSimulationService {
     }
 
     private int roll(int max) {
-        Random random = new Random();
-        return random.nextInt((max - 1) + 1) + 1;
+        return RANDOM.nextInt((max - 1) + 1) + 1;
     }
 
     private Roll createRoll(int totalSum) {
@@ -57,13 +60,13 @@ public class RollSimulationService {
         return roll;
     }
 
-    private void saveSimulation(RollConfiguration rollConfiguration, List<Roll> rollList) {
+    private Simulation saveSimulation(RollConfiguration rollConfiguration, List<Roll> rollList) {
         Simulation simulation = new Simulation();
         simulation.setRolls(rollList);
         simulation.setConfiguration(rollConfiguration);
         rollList.forEach(roll -> roll.setSimulation(simulation));
 
-        simulationRepository.save(simulation);
+        return simulationRepository.save(simulation);
     }
 
     public RollConfiguration getRollConfiguration(Integer diceNumber, Integer diceSide) {

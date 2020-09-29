@@ -2,6 +2,7 @@ package com.assesment.avaloq.service;
 
 import com.assesment.avaloq.domain.Roll;
 import com.assesment.avaloq.domain.RollConfiguration;
+import com.assesment.avaloq.domain.Simulation;
 import com.assesment.avaloq.model.DistributionResponse;
 import com.assesment.avaloq.model.SimulationResult;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * API Service for all {@link Roll} related endpoints.
+ */
 @Slf4j
 @Service
 @Transactional
@@ -25,10 +29,10 @@ public class RollSimulationApiService {
         log.info("Roll {} pieces of {}-sided dice {} times", diceNumber, diceSide, numberOfRolls);
         RollConfiguration rollConfiguration = rollSimulationService.getRollConfiguration(diceNumber, diceSide);
 
-        List<Roll> rollList = rollSimulationService.executeSimulation(numberOfRolls, rollConfiguration);
+        Simulation simulation = rollSimulationService.executeSimulation(numberOfRolls, rollConfiguration);
 
         SimulationResult response = new SimulationResult();
-        response.setResults(RollResponseMapper.mapTotalSumList(rollList));
+        response.setResults(RollResponseMapper.mapSimulationResults(simulation.getRolls()));
         return ResponseEntity.ok(response);
     }
 

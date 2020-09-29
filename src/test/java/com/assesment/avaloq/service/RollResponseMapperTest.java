@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 class RollResponseMapperTest {
 
     @Test
-    void mapRollsToTotalSumListTest() {
+    void mapSimulationResultsTest() {
         Roll roll1 = new Roll();
         roll1.setTotalSum(1);
 
@@ -28,7 +28,7 @@ class RollResponseMapperTest {
         Roll roll3 = new Roll();
         roll3.setTotalSum(5);
 
-        List<TotalSumResult> totalSums = RollResponseMapper.mapTotalSumList(List.of(roll1, roll2, roll3));
+        List<TotalSumResult> totalSums = RollResponseMapper.mapSimulationResults(List.of(roll1, roll2, roll3));
 
         assertNotNull(totalSums);
         assertEquals(2, totalSums.size());

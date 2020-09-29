@@ -5,6 +5,9 @@ import lombok.Setter;
 
 import java.util.List;
 
+/**
+ * Result of the requested distribution for all combinations.
+ */
 @Getter
 @Setter
 public class DistributionResponse {

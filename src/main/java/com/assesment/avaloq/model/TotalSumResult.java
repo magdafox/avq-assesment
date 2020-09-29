@@ -3,6 +3,9 @@ package com.assesment.avaloq.model;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Each totalSum executed in the simulation counted.
+ */
 @Getter
 @Setter
 public class TotalSumResult {

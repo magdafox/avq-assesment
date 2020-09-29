@@ -18,14 +18,14 @@ import java.util.stream.Collectors;
 @UtilityClass
 public class RollResponseMapper {
 
-    public List<TotalSumResult> mapTotalSumList(List<Roll> rolls) {
+    public List<TotalSumResult> mapSimulationResults(List<Roll> rolls) {
         Map<Integer, Long> totalCounts = RollSimulationUtil.countByTotalSum(rolls);
-        return totalCounts.entrySet().stream().map(t -> mapTotalSum(t.getKey(), t.getValue()))
+        return totalCounts.entrySet().stream().map(t -> mapTotalSumResult(t.getKey(), t.getValue()))
                 .sorted(Comparator.comparing(TotalSumResult::getTotalSum))
                 .collect(Collectors.toList());
     }
 
-    private TotalSumResult mapTotalSum(Integer total, Long amount) {
+    private TotalSumResult mapTotalSumResult(Integer total, Long amount) {
         TotalSumResult response = new TotalSumResult();
         response.setTotalSum(total);
         response.setCount(amount);

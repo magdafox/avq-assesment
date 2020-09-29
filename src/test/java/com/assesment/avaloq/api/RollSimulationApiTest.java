@@ -25,7 +25,7 @@ class RollSimulationApiTest {
     @Test
     void simulateWithNumberOfDicesIncorrect() throws Exception {
         mockMvc.perform(
-                post("/dices/distributions")
+                post("/dice/simulations")
                         .param("diceNumber", "0"))
                 .andExpect(status().isBadRequest());
     }
@@ -33,7 +33,7 @@ class RollSimulationApiTest {
     @Test
     void simulateWithNumberOfDicesCorrect() throws Exception {
         mockMvc.perform(
-                post("/dices/distributions")
+                post("/dice/simulations")
                         .param("diceNumber", "1"))
                 .andExpect(status().isOk());
     }
@@ -41,7 +41,7 @@ class RollSimulationApiTest {
     @Test
     void simulateWithSidesOfDiceIncorrect() throws Exception {
         mockMvc.perform(
-                post("/dices/distributions")
+                post("/dice/simulations")
                         .param("diceSide", "3"))
                 .andExpect(status().isBadRequest());
     }
@@ -49,7 +49,7 @@ class RollSimulationApiTest {
     @Test
     void simulateWithSidesOfDiceCorrect() throws Exception {
         mockMvc.perform(
-                post("/dices/distributions")
+                post("/dice/simulations")
                         .param("diceSide", "4"))
                 .andExpect(status().isOk());
     }
@@ -57,7 +57,7 @@ class RollSimulationApiTest {
     @Test
     void simulateWithNumberOfRollsIncorrect() throws Exception {
         mockMvc.perform(
-                post("/dices/distributions")
+                post("/dice/simulations")
                         .param("numberOfRolls", "0"))
                 .andExpect(status().isBadRequest());
     }
@@ -65,7 +65,7 @@ class RollSimulationApiTest {
     @Test
     void simulateWithNumberOfRollsCorrect() throws Exception {
         mockMvc.perform(
-                post("/dices/distributions")
+                post("/dice/simulations")
                         .param("numberOfRolls", "1"))
                 .andExpect(status().isOk());
     }
